@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"afaf-group.com/domain/models"
 	"github.com/labstack/gommon/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -29,5 +30,5 @@ func DBConnection(d *Database) (*gorm.DB, error) {
 }
 
 func DatabaseMigration(db *gorm.DB) {
-	db.AutoMigrate()
+	db.AutoMigrate(models.User{})
 }
