@@ -3,8 +3,8 @@ package config
 import "time"
 
 const (
-	defaultAppName = "Marketing Service"
-	defaultAppPort = "5080"
+	defaultAppName = "Franchise Ordering System"
+	defaultAppPort = "8080"
 
 	// default DB
 	defaultDBPort              = 3306

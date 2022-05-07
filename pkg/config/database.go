@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -18,8 +19,15 @@ func DBConnection(d *Database) (*gorm.DB, error) {
 	)
 	db, err := gorm.Open(mysql.Open(args), &gorm.Config{})
 	if err != nil {
-		return db, err
+		log.Info("failed to connect database: ", err)
+		panic(err)
 	}
 
+	DatabaseMigration(db)
+
 	return db, nil
+}
+
+func DatabaseMigration(db *gorm.DB) {
+	db.AutoMigrate()
 }

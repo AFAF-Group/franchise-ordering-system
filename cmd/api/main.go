@@ -1,21 +1,30 @@
 package main
 
 import (
-	"afaf-group.com/pkg/config"
-	"github.com/labstack/echo/v4"
+	"fmt"
 
-	stdLog "log"
+	"afaf-group.com/pkg/config"
+	"afaf-group.com/pkg/middlewares"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 func main() {
 	app := echo.New()
-	config.LoadEnv(".env")
+	config.LoadEnv("config.env")
 	conf := config.NewConfig()
 
 	_, errMainDB := config.DBConnection(&conf.MainDatabase)
 	if errMainDB != nil {
-		stdLog.Fatalf("Error connection to main db %v\n", errMainDB)
+		log.Fatalf("Error connection to main db %v\n", errMainDB)
 	}
 
-	app.Use()
+	middlewares.LoggerMiddlewares(app)
+
+	// run server
+	address := fmt.Sprintf(":%s", conf.AppPort)
+
+	if err := app.Start(address); err != nil {
+		log.Info("shutting down the server")
+	}
 }
