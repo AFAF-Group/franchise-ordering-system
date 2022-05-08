@@ -23,7 +23,14 @@ Application for managing queue of order in franchise, restaurant, café, etc.
 # Feature
 
 # How to Use
-
+- Installing dependencies
+```bash
+go mod tidy
+```
+- Run Local
+```bash
+go run .\cmd\api\main.go
+```
 # Endpoints
 
 # Credits
