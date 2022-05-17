@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"afaf-group.com/domain"
 	"afaf-group.com/pkg/config"
 	"afaf-group.com/pkg/middlewares"
 	"afaf-group.com/router"
@@ -20,6 +21,7 @@ func main() {
 		log.Fatalf("Error connection to main db %v\n", errMainDB)
 	}
 
+	app.HTTPErrorHandler = middlewares.NewHttpErrorHandler(domain.NewErrorStatusCodeMaps()).Handler
 	middlewares.LoggerMiddlewares(app)
 
 	// Custom Validator

@@ -22,7 +22,7 @@ func NewCustomerUseCase(customerMySQLRepository repository.CustomerMySqlReposito
 func (u customerUseCase) Store(ctx echo.Context, createCustomerRequest *request.CreateCustomerRequest) (*models.Customer, error) {
 	// check user exists
 	customerExist := u.customerMySQLRepository.GetByEmail(createCustomerRequest.Email)
-	if customerExist != nil {
+	if customerExist.Email != "" {
 		return nil, domain.ErrConflict
 	}
 	customer, err := u.customerMySQLRepository.Create(ctx, createCustomerRequest)
