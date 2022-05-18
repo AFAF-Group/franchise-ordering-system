@@ -31,6 +31,15 @@ go mod tidy
 ```bash
 go run .\cmd\api\main.go
 ```
+- swagger-doc: generating swagger
+```bash
+$ swag init --generalInfo cmd/api/main.go --dir ./ --output docs/swagger --exclude logs,web,assets,database
+```
+- swagger-fmt: for formatting swagger in controllers
+```bash
+$ swag fmt --generalInfo cmd/api/main.go --dir ./ --exclude logs,web,assets,database
+```
+
 # Endpoints
 
 # Credits
