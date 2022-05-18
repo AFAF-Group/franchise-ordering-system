@@ -19,6 +19,17 @@ func NewController(customerUseCase usecase.CustomerUseCase) *Controller {
 	return &Controller{customerUseCase: customerUseCase}
 }
 
+// GetMap godoc
+// @Summary      Get Map Example
+// @Description  get map
+// @ID           get-map
+// @Accept       json
+// @Produce      json
+// @Router       /customers [get]
+func (c *Controller) GetCustomerList(ctx echo.Context) {
+
+}
+
 func (c *Controller) CreateCustomer(ctx echo.Context) error {
 	var customerRequest request.CreateCustomerRequest
 	if err := c.BindAndValidate(ctx, &customerRequest); err != nil {

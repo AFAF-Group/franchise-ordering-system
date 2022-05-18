@@ -1,0 +1,36 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a franchise-ordering-system server.",
+        "title": "Swagger Franchise Ordering System API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "franchise-ordering-system.swagger.io",
+    "basePath": "/v2",
+    "paths": {
+        "/customers": {
+            "get": {
+                "description": "get map",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Map Example",
+                "operationId": "get-map",
+                "responses": {}
+            }
+        }
+    }
+}
