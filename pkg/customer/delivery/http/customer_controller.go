@@ -29,9 +29,7 @@ func (c *Controller) CreateCustomer(ctx echo.Context) error {
 
 	customer, err := c.customerUseCase.Store(ctx, &customerRequest)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, &response.APIResponse{
-			Message: err.Error(),
-		})
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, response.APIResponse{

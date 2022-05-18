@@ -1,6 +1,8 @@
 package mysql
 
 import (
+	"fmt"
+
 	"afaf-group.com/domain/models"
 	"afaf-group.com/domain/repository"
 	"afaf-group.com/domain/request"
@@ -18,7 +20,10 @@ func NewCustomerMySQLRepository(db *gorm.DB) repository.CustomerMySqlRepository 
 
 func (r customerMySQLRepository) GetByEmail(email string) *models.Customer {
 	var customer = models.Customer{}
-	r.db.Where(&models.Customer{Email: email}).First(&customer)
+	if result := r.db.Where(&models.Customer{Email: email}).First(&customer); result.Error != nil {
+		// error handling...
+	}
+	fmt.Println(customer.ID, "fadfsdf")
 
 	return &customer
 }
