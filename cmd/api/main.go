@@ -54,6 +54,10 @@ func main() {
 
 	// Auth Routes
 	router.InitAuthRoutes(app, db)
+
+	// Food Routes
+	router.InitFoodRoutes(app, db)
+
 	// init Swagger
 	app.GET("/swagger/*", echoSwagger.WrapHandler)
 	// run server

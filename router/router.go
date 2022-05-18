@@ -11,6 +11,10 @@ import (
 	customerHTTPDelivery "afaf-group.com/pkg/customer/delivery/http"
 	customerRepository "afaf-group.com/pkg/customer/repository/mysql"
 	customerUseCase "afaf-group.com/pkg/customer/usecase"
+
+	foodHTTPDelivery "afaf-group.com/pkg/food/delivery/http"
+	foodRepository "afaf-group.com/pkg/food/repository/mysql"
+	foodUseCase "afaf-group.com/pkg/food/usecase"
 )
 
 func InitAuthRoutes(r *echo.Echo, db *gorm.DB) {
@@ -28,4 +32,13 @@ func InitAuthRoutes(r *echo.Echo, db *gorm.DB) {
 	routerCustomer := r.Group("/customers")
 	routerCustomer.GET("", customerController.CreateCustomer)
 	routerCustomer.POST("", customerController.CreateCustomer)
+}
+
+func InitFoodRoutes(r *echo.Echo, db *gorm.DB) {
+	foodRepo := foodRepository.NewFoodMySQLRepository(db)
+	foodUCase := foodUseCase.NewFoodUseCase(foodRepo)
+	foodController := foodHTTPDelivery.NewController(foodUCase)
+
+	foodGroup := r.Group("/foods")
+	foodGroup.GET("", foodController.GetAll)
 }
