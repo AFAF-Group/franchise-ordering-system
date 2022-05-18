@@ -32,4 +32,5 @@ func DBConnection(d *Database) (*gorm.DB, error) {
 func DatabaseMigration(db *gorm.DB) {
 	db.AutoMigrate(models.User{})
 	db.AutoMigrate(models.Customer{})
+	db.AutoMigrate(models.Food{})
 }

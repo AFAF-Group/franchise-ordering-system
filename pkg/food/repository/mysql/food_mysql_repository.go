@@ -18,7 +18,7 @@ func NewFoodMySQLRepository(db *gorm.DB) repository.FoodMySQLRepository {
 }
 
 func (r foodMySQLRepository) GetAll(ctx echo.Context, foodRequest *request.GetAllFoodRequest) (*common.Pagination, error) {
-	var food models.Food
+	var food []models.Food
 	query := r.db.Model(&models.Food{}).Find(&food)
 	if foodRequest.Search != "" {
 		query = query.Where("name ILIKE ?", foodRequest.Search+"%")
