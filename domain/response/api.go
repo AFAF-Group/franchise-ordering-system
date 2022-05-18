@@ -6,4 +6,4 @@ type APIResponse struct {
 	Data     interface{} `json:"data,omitempty"`
 	PageInfo interface{} `json:"page_info,omitempty"`
 	Errors   interface{} `json:"errors,omitempty"`
-} // @name APIResponse
+} // @name  APIResponse

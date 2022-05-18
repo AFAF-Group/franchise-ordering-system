@@ -26,5 +26,6 @@ func InitAuthRoutes(r *echo.Echo, db *gorm.DB) {
 	router.POST("/login", authController.Login)
 
 	routerCustomer := r.Group("/customers")
+	routerCustomer.GET("", customerController.CreateCustomer)
 	routerCustomer.POST("", customerController.CreateCustomer)
 }

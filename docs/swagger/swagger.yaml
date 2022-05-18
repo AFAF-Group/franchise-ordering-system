@@ -1,0 +1,26 @@
+basePath: /v2
+host: franchise-ordering-system.swagger.io
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a franchise-ordering-system server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Franchise Ordering System API
+  version: "1.0"
+paths:
+  /customers:
+    get:
+      consumes:
+      - application/json
+      description: get map
+      operationId: get-map
+      produces:
+      - application/json
+      responses: {}
+      summary: Get Map Example
+swagger: "2.0"
