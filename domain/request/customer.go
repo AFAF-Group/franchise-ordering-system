@@ -5,3 +5,8 @@ type CreateCustomerRequest struct {
 	Email string `json:"email"`
 	Phone string `json:"phone"`
 }
+
+type GetAllCustomerRequest struct {
+	PaginationRequest
+	Search string `json:"search"`
+}
