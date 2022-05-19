@@ -6,6 +6,7 @@ import (
 	"afaf-group.com/domain/repository"
 	"afaf-group.com/domain/request"
 	"afaf-group.com/domain/usecase"
+	"afaf-group.com/pkg/common"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,6 +18,16 @@ func NewCustomerUseCase(customerMySQLRepository repository.CustomerMySqlReposito
 	return &customerUseCase{
 		customerMySQLRepository: customerMySQLRepository,
 	}
+}
+
+func (c *customerUseCase) GetAll(ctx echo.Context, customerRequest *request.GetAllCustomerRequest) (*common.Pagination, error) {
+	paging, err := c.customerMySQLRepository.GetAll(ctx, customerRequest)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return paging, nil
 }
 
 func (u customerUseCase) Store(ctx echo.Context, createCustomerRequest *request.CreateCustomerRequest) (*models.Customer, error) {
