@@ -10,6 +10,7 @@ import (
 	"afaf-group.com/domain/repository"
 	"afaf-group.com/domain/request"
 	"afaf-group.com/domain/usecase"
+	"github.com/go-sql-driver/mysql"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	dberr "github.com/ytnobody/gomysqlerror/v80error"
@@ -42,6 +43,27 @@ func (u authUseCase) Login(ctx echo.Context, loginRequest *request.AuthRequest) 
 	return tokenDetails, err
 }
 
+func (u authUseCase) Register(ctx echo.Context, registerRequest *request.AuthRequest) error {
+	passwordHash, err := utils.NewBCrypt().HashPassword(registerRequest.Password)
+	if err != nil {
+		return err
+	}
+
+	user := models.User{
+		Email:    registerRequest.Email,
+		Password: passwordHash,
+	}
+
+	errRegister := u.authMySQLRepository.Register(ctx, &user)
+	if errRegister != nil {
+		if errRegister.(*mysql.MySQLError).Number == uint16(dberr.ER_DUP_ENTRY) {
+			return domain.ErrEmailAlreadyExists
+		}
+		return errRegister
+	}
+	return nil
+}
+
 func (u authUseCase) CreateToken(ctx echo.Context, user *models.User) (*models.Auth, error) {
 	if user == nil {
 		return nil, errors.New("error: user not found")
@@ -67,25 +89,4 @@ func (u authUseCase) CreateToken(ctx echo.Context, user *models.User) (*models.A
 		ExpiresAt:   expiresAt,
 	}
 	return &tokenDetails, nil
-}
-
-func (u authUseCase) Register(ctx echo.Context, registerRequest *request.AuthRequest) error {
-	passwordHash, err := utils.NewBCrypt().HashPassword(registerRequest.Password)
-	if err != nil {
-		return err
-	}
-
-	user := models.User{
-		Email:    registerRequest.Email,
-		Password: passwordHash,
-	}
-
-	errRegister := u.authMySQLRepository.Register(ctx, &user)
-	if errRegister != nil {
-		if dberr.IsServerErrorDupEntry(errRegister) {
-			return domain.ErrEmailAlreadyExists
-		}
-		return errRegister
-	}
-	return nil
 }

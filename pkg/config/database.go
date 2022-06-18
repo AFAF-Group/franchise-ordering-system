@@ -19,12 +19,13 @@ func DBConnection(d *Database) (*gorm.DB, error) {
 		d.DatabaseName,
 	)
 	db, err := gorm.Open(mysql.Open(args), &gorm.Config{})
+	// db, err := sql.Open("mysql", args)
 	if err != nil {
 		log.Info("failed to connect database: ", err)
 		panic(err)
 	}
 
-	// DatabaseMigration(db)
+	DatabaseMigration(db)
 
 	return db, nil
 }
