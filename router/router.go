@@ -4,10 +4,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	"afaf-group.com/common/utils"
 	authHTTPDelivery "afaf-group.com/pkg/auth/delivery/http"
 	authRepository "afaf-group.com/pkg/auth/repository/mysql"
 	authUseCase "afaf-group.com/pkg/auth/usecase"
+	"afaf-group.com/pkg/common/utils"
 
 	customerHTTPDelivery "afaf-group.com/pkg/customer/delivery/http"
 	customerRepository "afaf-group.com/pkg/customer/repository/mysql"

@@ -20,12 +20,19 @@ func NewController(customerUseCase usecase.CustomerUseCase) *Controller {
 	return &Controller{customerUseCase: customerUseCase}
 }
 
-// GetMap godoc
-// @Summary      Get Map Example
-// @Description  get map
-// @ID           get-map
+// GetCustomerList godoc
+// @Tags         Customer
+// @Summary      Get Customer List With Pagination
+// @Description  Get Customer List With Pagination
 // @Accept       json
+// @Param        customerRequest  body  request.GetAllCustomerRequest  true  "Page: Page Number; Limit: Request Limit; Search: Reqeust for search customer"
 // @Produce      json
+// @Success      200  {object}  response.APIResponse{data=[]models.Customer}
+// @Failure      400  {object}  response.SwaggerHTTPErrorBadRequestValidation
+// @Failure      401  {object}  response.SwaggerHTTPErrorUnauthorized
+// @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
+// @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
+// @Security     ApiKeyAuth
 // @Router       /customers [get]
 func (c *Controller) GetCustomerList(ctx echo.Context) error {
 	var customerRequest request.GetAllCustomerRequest
@@ -54,6 +61,20 @@ func (c *Controller) GetCustomerList(ctx echo.Context) error {
 	})
 }
 
+// CreateCustomer godoc
+// @Tags         Customer
+// @Summary      Create New Customer
+// @Description  Create New Customer
+// @Accept       json
+// @Param        customerRequest  body  request.CreateCustomerRequest  true  "Name: Customer name; Email: Customer email; Phone: Customer phone number"
+// @Produce      json
+// @Success      200  {object}  response.APIResponse{data=models.Customer}
+// @Failure      400  {object}  response.SwaggerHTTPErrorBadRequestValidation
+// @Failure      401  {object}  response.SwaggerHTTPErrorUnauthorized
+// @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
+// @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
+// @Security     ApiKeyAuth
+// @Router       /customers [get]
 func (c *Controller) CreateCustomer(ctx echo.Context) error {
 	var customerRequest request.CreateCustomerRequest
 	if err := c.BindAndValidate(ctx, &customerRequest); err != nil {

@@ -4,12 +4,12 @@ import (
 	"errors"
 	"time"
 
-	"afaf-group.com/common/utils"
 	"afaf-group.com/domain"
 	"afaf-group.com/domain/models"
 	"afaf-group.com/domain/repository"
 	"afaf-group.com/domain/request"
 	"afaf-group.com/domain/usecase"
+	"afaf-group.com/pkg/common/utils"
 	"github.com/go-sql-driver/mysql"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"

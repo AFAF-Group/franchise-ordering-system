@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"afaf-group.com/domain"
+	_ "afaf-group.com/domain/models"
 	"afaf-group.com/domain/request"
 	"afaf-group.com/domain/response"
 	"afaf-group.com/domain/usecase"
@@ -21,6 +22,20 @@ func NewController(authUseCase usecase.AuthUseCase) *Controller {
 	return &Controller{authUseCase: authUseCase}
 }
 
+// Login godoc
+// @Tags         Authorization
+// @Summary      Login
+// @Description  Login with Email and Password
+// @Accept       json
+// @Param        loginRequest  body  request.AuthRequest  true  "Email: User Email; Password: User Password"
+// @Produce      json
+// @Success      200  {object}  response.APIResponse{data=models.Auth}
+// @Failure      400  {object}  response.SwaggerHTTPErrorBadRequestValidation
+// @Failure      401  {object}  response.SwaggerHTTPErrorUnauthorized
+// @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
+// @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
+// @Security     ApiKeyAuth
+// @Router       /auth/login [post]
 func (c Controller) Login(ctx echo.Context) error {
 	var loginRequest request.AuthRequest
 	if err := c.BindAndValidate(ctx, &loginRequest); err != nil {
@@ -42,6 +57,20 @@ func (c Controller) Login(ctx echo.Context) error {
 	})
 }
 
+// Register godoc
+// @Tags         Authorization
+// @Summary      Register
+// @Description  Register with Email and Password
+// @Accept       json
+// @Param        registerReqest  body  request.AuthRequest  true  "Email: User Email; Password: User Password"
+// @Produce      json
+// @Success      200  {object}  response.APIResponse{}
+// @Failure      400  {object}  response.SwaggerHTTPErrorBadRequestValidation
+// @Failure      401  {object}  response.SwaggerHTTPErrorUnauthorized
+// @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
+// @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
+// @Security     ApiKeyAuth
+// @Router       /auth/register [post]
 func (c Controller) Register(ctx echo.Context) error {
 	var registerRequest request.AuthRequest
 	if err := c.BindAndValidate(ctx, &registerRequest); err != nil {

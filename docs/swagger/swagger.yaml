@@ -1,4 +1,126 @@
 basePath: /v2
+definitions:
+  APIResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      errors: {}
+      message:
+        type: string
+      page_info: {}
+    type: object
+  HttpErrorBadRequestValidation:
+    properties:
+      errors:
+        items:
+          properties:
+            field:
+              example: email
+              type: string
+            message:
+              example: The email must be a valid email address.
+              type: string
+          type: object
+        type: array
+      message:
+        example: Error Validation
+        type: string
+    type: object
+  HttpErrorInternalServerError:
+    properties:
+      message:
+        example: Internal Server Error
+        type: string
+    type: object
+  HttpErrorNotFound:
+    properties:
+      message:
+        example: record not found
+        type: string
+    type: object
+  HttpErrorUnauthorized:
+    properties:
+      message:
+        example: missing key in request header
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Auth:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  models.Customer:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  request.AuthRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  request.CreateCustomerRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  request.GetAllCustomerRequest:
+    properties:
+      limit:
+        description: This is limit, if load all data set value to -1
+        example: 10
+        type: integer
+      page:
+        description: This is page, if load all data set value to 0
+        example: 1
+        type: integer
+      search:
+        type: string
+    type: object
+  request.GetAllFoodRequest:
+    properties:
+      limit:
+        description: This is limit, if load all data set value to -1
+        example: 10
+        type: integer
+      page:
+        description: This is page, if load all data set value to 0
+        example: 1
+        type: integer
+      search:
+        type: string
+    type: object
 host: franchise-ordering-system.swagger.io
 info:
   contact:
@@ -13,14 +135,176 @@ info:
   title: Swagger Franchise Ordering System API
   version: "1.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with Email and Password
+      parameters:
+      - description: 'Email: User Email; Password: User Password'
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Auth'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HttpErrorBadRequestValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/HttpErrorUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/HttpErrorNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/HttpErrorInternalServerError'
+      security:
+      - ApiKeyAuth: []
+      summary: Login
+      tags:
+      - Authorization
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register with Email and Password
+      parameters:
+      - description: 'Email: User Email; Password: User Password'
+        in: body
+        name: registerReqest
+        required: true
+        schema:
+          $ref: '#/definitions/request.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HttpErrorBadRequestValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/HttpErrorUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/HttpErrorNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/HttpErrorInternalServerError'
+      security:
+      - ApiKeyAuth: []
+      summary: Register
+      tags:
+      - Authorization
   /customers:
     get:
       consumes:
       - application/json
-      description: get map
-      operationId: get-map
+      description: Create New Customer
+      parameters:
+      - description: 'Name: Customer name; Email: Customer email; Phone: Customer
+          phone number'
+        in: body
+        name: customerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateCustomerRequest'
       produces:
       - application/json
-      responses: {}
-      summary: Get Map Example
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Customer'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HttpErrorBadRequestValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/HttpErrorUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/HttpErrorNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/HttpErrorInternalServerError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create New Customer
+      tags:
+      - Customer
+  /foods:
+    get:
+      consumes:
+      - application/json
+      description: Get All Food With Pagination
+      parameters:
+      - description: 'Page: Page Number; Limit: Request Limit; Search: Reqeust for
+          search food'
+        in: body
+        name: foodRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.GetAllFoodRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HttpErrorBadRequestValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/HttpErrorUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/HttpErrorNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/HttpErrorInternalServerError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Food With Pagination
+      tags:
+      - Food
 swagger: "2.0"
