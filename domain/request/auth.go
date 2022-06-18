@@ -1,6 +1,6 @@
 package request
 
-type LoginRequest struct {
+type AuthRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }

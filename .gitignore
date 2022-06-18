@@ -1,0 +1,13 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Env File
+.env
+config.env
+
+# VS Code Debug
+cmd/api/__debug_bin

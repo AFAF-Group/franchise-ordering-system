@@ -7,5 +7,6 @@ import (
 )
 
 type AuthMySQLRepository interface {
-	Login(ctx echo.Context, loginRequest *request.LoginRequest) (*models.User, error)
+	FindOneByEmail(ctx echo.Context, loginRequest *request.AuthRequest) (*models.User, error)
+	Register(ctx echo.Context, user *models.User) error
 }

@@ -7,5 +7,6 @@ import (
 )
 
 type AuthUseCase interface {
-	Login(ctx echo.Context, loginRequest *request.LoginRequest) (*models.User, error)
+	Login(ctx echo.Context, loginRequest *request.AuthRequest) (*models.Auth, error)
+	Register(ctx echo.Context, registerRequest *request.AuthRequest) error
 }

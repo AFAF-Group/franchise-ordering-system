@@ -24,7 +24,7 @@ func DBConnection(d *Database) (*gorm.DB, error) {
 		panic(err)
 	}
 
-	DatabaseMigration(db)
+	// DatabaseMigration(db)
 
 	return db, nil
 }
