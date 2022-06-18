@@ -14,6 +14,8 @@ var (
 	ErrConflict = errors.New("Your Item already exist")
 	// ErrBadParamInput will throw if the given request-body or params is not valid
 	ErrBadParamInput = errors.New("Given Param is not valid")
+	// ErrEmailAlreadyExists
+	ErrEmailAlreadyExists = errors.New("Email already exists")
 )
 
 // map error to get proper status code

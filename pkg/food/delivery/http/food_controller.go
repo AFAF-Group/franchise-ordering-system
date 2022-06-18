@@ -20,6 +20,20 @@ func NewController(foodUseCase usecase.FoodUseCase) *Controller {
 	return &Controller{foodUseCase: foodUseCase}
 }
 
+// GetAll godoc
+// @Tags         Food
+// @Summary      Get All Food With Pagination
+// @Description  Get All Food With Pagination
+// @Accept       json
+// @Param        foodRequest  body  request.GetAllFoodRequest  true  "Page: Page Number; Limit: Request Limit; Search: Reqeust for search food"
+// @Produce      json
+// @Success      200  {object}  response.APIResponse{[]models.Food}
+// @Failure      400  {object}  response.SwaggerHTTPErrorBadRequestValidation
+// @Failure      401  {object}  response.SwaggerHTTPErrorUnauthorized
+// @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
+// @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
+// @Security     ApiKeyAuth
+// @Router       /foods [get]
 func (c Controller) GetAll(ctx echo.Context) error {
 	var foodRequest request.GetAllFoodRequest
 	if err := c.BindAndValidate(ctx, &foodRequest); err != nil {

@@ -7,6 +7,7 @@ import (
 	authHTTPDelivery "afaf-group.com/pkg/auth/delivery/http"
 	authRepository "afaf-group.com/pkg/auth/repository/mysql"
 	authUseCase "afaf-group.com/pkg/auth/usecase"
+	"afaf-group.com/pkg/common/utils"
 
 	customerHTTPDelivery "afaf-group.com/pkg/customer/delivery/http"
 	customerRepository "afaf-group.com/pkg/customer/repository/mysql"
@@ -26,12 +27,13 @@ func InitAuthRoutes(r *echo.Echo, db *gorm.DB) {
 	customerUCase := customerUseCase.NewCustomerUseCase(customerRepo)
 	customerController := customerHTTPDelivery.NewController(customerUCase)
 
-	router := r.Group("/auth")
-	router.POST("/login", authController.Login)
+	routerAuth := r.Group("/auth")
+	routerAuth.POST("/login", authController.Login)
+	routerAuth.POST("/register", authController.Register)
 
 	routerCustomer := r.Group("/customers")
-	routerCustomer.GET("", customerController.GetCustomerList)
-	routerCustomer.POST("", customerController.CreateCustomer)
+	routerCustomer.GET("", customerController.GetCustomerList, utils.AuthMidlleware())
+	routerCustomer.POST("", customerController.CreateCustomer, utils.AuthMidlleware())
 }
 
 func InitFoodRoutes(r *echo.Echo, db *gorm.DB) {
@@ -40,5 +42,5 @@ func InitFoodRoutes(r *echo.Echo, db *gorm.DB) {
 	foodController := foodHTTPDelivery.NewController(foodUCase)
 
 	foodGroup := r.Group("/foods")
-	foodGroup.GET("", foodController.GetAll)
+	foodGroup.GET("", foodController.GetAll, utils.AuthMidlleware())
 }

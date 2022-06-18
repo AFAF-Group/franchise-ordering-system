@@ -16,9 +16,13 @@ func NewAuthMySQLRepository(db *gorm.DB) repository.AuthMySQLRepository {
 	return &authMySQLRepository{db: db}
 }
 
-func (r authMySQLRepository) Login(ctx echo.Context, loginRequest *request.LoginRequest) (*models.User, error) {
+func (r authMySQLRepository) FindOneByEmail(ctx echo.Context, loginRequest *request.AuthRequest) (*models.User, error) {
 	var user models.User
-	err := r.db.Model(&models.User{}).First(&user, "email=? AND password=?", loginRequest.Email, loginRequest.Password).Error
+	err := r.db.Model(&models.User{}).First(&user, "email=?", loginRequest.Email).Error
 
 	return &user, err
+}
+
+func (r authMySQLRepository) Register(ctx echo.Context, user *models.User) error {
+	return r.db.Model(&models.User{}).Create(&user).Error
 }
