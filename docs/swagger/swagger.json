@@ -293,6 +293,208 @@
                     }
                 }
             }
+        },
+        "/orders": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Show List All Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get All Order",
+                "parameters": [
+                    {
+                        "description": "Page: page number; Limit: limit number; Search: search order",
+                        "name": "orderRequest",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/request.GetAllOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Order"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorBadRequestValidation"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create New Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Create Order",
+                "parameters": [
+                    {
+                        "description": "CustomerID: ID from seleted customer; Status: status order; TotalPrice: total price order",
+                        "name": "orderRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.OrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorBadRequestValidation"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/update": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update Existing Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Update Order",
+                "parameters": [
+                    {
+                        "description": "CustomerID: ID from seleted customer; Status: status order; TotalPrice: total price order",
+                        "name": "orderRequest",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/request.OrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorBadRequestValidation"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/HttpErrorInternalServerError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -406,8 +608,40 @@
                 "name": {
                     "type": "string"
                 },
+                "order": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Order"
+                    }
+                },
                 "phone": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Order": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerID": {
+                    "type": "integer"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "totalPrice": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -472,6 +706,38 @@
                 },
                 "search": {
                     "type": "string"
+                }
+            }
+        },
+        "request.GetAllOrderRequest": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "description": "This is limit, if load all data set value to -1",
+                    "type": "integer",
+                    "example": 10
+                },
+                "page": {
+                    "description": "This is page, if load all data set value to 0",
+                    "type": "integer",
+                    "example": 1
+                },
+                "search": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.OrderRequest": {
+            "type": "object",
+            "properties": {
+                "customer_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "total_price": {
+                    "type": "integer"
                 }
             }
         }
