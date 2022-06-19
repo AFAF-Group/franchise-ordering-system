@@ -16,6 +16,10 @@ import (
 	foodHTTPDelivery "afaf-group.com/pkg/food/delivery/http"
 	foodRepository "afaf-group.com/pkg/food/repository/mysql"
 	foodUseCase "afaf-group.com/pkg/food/usecase"
+
+	orderHTTPDelivery "afaf-group.com/pkg/order/delivery/http"
+	orderRepository "afaf-group.com/pkg/order/repository/mysql"
+	orderUseCase "afaf-group.com/pkg/order/usecase"
 )
 
 func InitAuthRoutes(r *echo.Echo, db *gorm.DB) {
@@ -43,4 +47,15 @@ func InitFoodRoutes(r *echo.Echo, db *gorm.DB) {
 
 	foodGroup := r.Group("/foods")
 	foodGroup.GET("", foodController.GetAll, utils.AuthMidlleware())
+}
+
+func InitOrderRoutes(r *echo.Echo, db *gorm.DB) {
+	orderRepo := orderRepository.NewOrderMySQLRepository(db)
+	orderUCase := orderUseCase.NewOrderUseCase(orderRepo)
+	orderController := orderHTTPDelivery.NewController(orderUCase)
+
+	orderGroup := r.Group("/orders")
+	orderGroup.GET("", orderController.GetAll, utils.AuthMidlleware())
+	orderGroup.POST("/create", orderController.Create, utils.AuthMidlleware())
+	orderGroup.PUT("/update", orderController.Update, utils.AuthMidlleware())
 }

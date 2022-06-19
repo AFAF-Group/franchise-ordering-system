@@ -34,4 +34,5 @@ func DatabaseMigration(db *gorm.DB) {
 	db.AutoMigrate(models.User{})
 	db.AutoMigrate(models.Customer{})
 	db.AutoMigrate(models.Food{})
+	db.AutoMigrate(models.Order{})
 }
