@@ -7,4 +7,5 @@ type Customer struct {
 	Email string `json:"email"`
 	Name  string `json:"name"`
 	Phone string `json:"phone"`
+	Order []Order
 }
