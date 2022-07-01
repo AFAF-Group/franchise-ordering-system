@@ -74,7 +74,7 @@ func (c *Controller) GetCustomerList(ctx echo.Context) error {
 // @Failure      404  {object}  response.SwaggerHTTPErrorNotFound
 // @Failure      500  {object}  response.SwaggerHTTPErrorInternalServerError
 // @Security     ApiKeyAuth
-// @Router       /customers [get]
+// @Router       /customers [post]
 func (c *Controller) CreateCustomer(ctx echo.Context) error {
 	var customerRequest request.CreateCustomerRequest
 	if err := c.BindAndValidate(ctx, &customerRequest); err != nil {
