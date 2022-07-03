@@ -1,5 +1,7 @@
 package config
 
+import "go.uber.org/zap"
+
 type Config struct {
 	AppName      string
 	AppSecret    string
@@ -8,6 +10,9 @@ type Config struct {
 	AppEnv       string
 	AppVersion   string
 	MainDatabase Database
+	LogPath      string
+	LogFile      string
+	Logger       *zap.Logger
 }
 
 type Database struct {
@@ -29,6 +34,8 @@ func NewConfig() *Config {
 		AppPort:    Env("APP_PORT", defaultAppPort),
 		AppEnv:     Env("APP_ENV", "local"),
 		AppVersion: Env("APP_VERSION", "1.0.0"),
+		LogPath:    Env("LOG_PATH", "logs"),
+		LogFile:    Env("LOG_FILE", "franchise-ordering-system.log"),
 		MainDatabase: Database{
 			Driver:            Env("DB_CONNECTION", "mysql"),
 			Host:              Env("DB_HOST", ""),

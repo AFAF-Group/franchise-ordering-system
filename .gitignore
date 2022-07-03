@@ -11,3 +11,6 @@ config.env
 
 # VS Code Debug
 cmd/api/__debug_bin
+
+# Log
+logs

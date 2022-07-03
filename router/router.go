@@ -59,3 +59,13 @@ func InitOrderRoutes(r *echo.Echo, db *gorm.DB) {
 	orderGroup.POST("/create", orderController.Create, utils.AuthMidlleware())
 	orderGroup.PUT("/update", orderController.Update, utils.AuthMidlleware())
 }
+
+func InitCustomerRoutes(r *echo.Echo, db *gorm.DB) {
+	customerRepo := customerRepository.NewCustomerMySQLRepository(db)
+	customerUCase := customerUseCase.NewCustomerUseCase(customerRepo)
+	customerController := customerHTTPDelivery.NewController(customerUCase)
+
+	customerGroup := r.Group("/customers")
+	customerGroup.GET("", customerController.GetCustomerList, utils.AuthMidlleware())
+	customerGroup.POST("/create", customerController.CreateCustomer, utils.AuthMidlleware())
+}

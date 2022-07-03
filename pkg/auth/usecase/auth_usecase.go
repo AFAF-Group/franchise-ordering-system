@@ -14,6 +14,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	dberr "github.com/ytnobody/gomysqlerror/v80error"
+	"go.uber.org/zap"
 )
 
 type authUseCase struct {
@@ -27,8 +28,13 @@ func NewAuthUseCase(authMySQLRepository repository.AuthMySQLRepository) usecase.
 }
 
 func (u authUseCase) Login(ctx echo.Context, loginRequest *request.AuthRequest) (*models.Auth, error) {
+	log := utils.LoggerFromEchoContext(ctx)
 	user, err := u.authMySQLRepository.FindOneByEmail(ctx, loginRequest)
 	if err != nil {
+		log.Error("Error find email",
+			zap.String("email", loginRequest.Email),
+			zap.Error(err),
+		)
 		return nil, err
 	}
 
@@ -37,7 +43,8 @@ func (u authUseCase) Login(ctx echo.Context, loginRequest *request.AuthRequest) 
 	}
 	tokenDetails, createTokenErr := u.CreateToken(ctx, user)
 	if createTokenErr != nil {
-		return nil, err
+		log.Error("Error create token", zap.Error(createTokenErr))
+		return nil, createTokenErr
 	}
 
 	return tokenDetails, err
